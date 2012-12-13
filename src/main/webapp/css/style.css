@@ -1,0 +1,146 @@
+body {
+    padding-top: 20px;
+}
+
+#fileSpinner {
+    padding-top: 0px;
+    position: relative;
+    height: 20px;
+    width: 25px;
+    left: 20%;
+    z-index: 1;
+}
+
+#fileSpinner:before {
+    content: "Loading structure ...";
+    position: absolute;
+    width: 130px;
+    left: 40px;
+}
+
+#codeSpinner {
+    padding: 10px 15px;
+    position: relative;
+    height: 20px;
+    width: 25px;
+    z-index: 1;
+}
+
+.ball {
+    position: absolute;
+    display: block;
+    background-color: #AAAAAA;
+    left: 12px;
+    width: 6px;
+    height: 6px;
+    border-radius: 5px;
+}
+
+#fileSpinner > .first-spinner, #codeSpinner > .first-spinner {
+    -webkit-animation-timing-function: cubic-bezier(0.5, 0.3, 0.9, 0.9);
+    -webkit-animation-name: rotate;
+    -webkit-animation-duration: 2s;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-transform-origin: 3px 10px;
+    -moz-animation-timing-function: cubic-bezier(0.5, 0.3, 0.9, 0.9);
+    -moz-animation-name: rotate;
+    -moz-animation-duration: 2s;
+    -moz-animation-iteration-count: infinite;
+    -moz-transform-origin: 3px 10px;
+
+}
+
+#fileSpinner> .second-spinner, #codeSpinner > .second-spinner {
+    -webkit-animation-timing-function: cubic-bezier(0.5, 0.5, 0.9, 0.9);
+    -webkit-animation-name: rotate;
+    -webkit-animation-duration: 2s;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-transform-origin: 3px 10px;
+    -moz-animation-timing-function: cubic-bezier(0.5, 0.5, 0.9, 0.9);
+    -moz-animation-name: rotate;
+    -moz-animation-duration: 2s;
+    -moz-animation-iteration-count: infinite;
+    -moz-transform-origin: 3px 10px;
+}
+
+#fileSpinner> .third-spinner, #codeSpinner > .third-spinner {
+    -webkit-animation-timing-function: cubic-bezier(0.5, 0.7, 0.9, 0.9);
+    -webkit-animation-name: rotate;
+    -webkit-animation-duration: 2s;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-transform-origin: 3px 10px;
+    -moz-animation-timing-function: cubic-bezier(0.5, 0.7, 0.9, 0.9);
+    -moz-animation-name: rotate;
+    -moz-animation-duration: 2s;
+    -moz-animation-iteration-count: infinite;
+    -moz-transform-origin: 3px 10px;
+}
+
+@-webkit-keyframes rotate {
+    0% {
+        -webkit-transform: rotate(0deg) scale(1);
+    }
+    100% {
+        -webkit-transform: rotate(1440deg) scale(1);
+    }
+}
+
+@-moz-keyframes rotate {
+    0% {
+        -moz-transform: rotate(0deg) scale(1);
+    }
+    100% {
+        -moz-transform: rotate(1440deg) scale(1);
+    }
+}
+
+textarea {
+    width: 97%;
+    margin: 5px 0;
+    padding: 5px;
+}
+
+#editModal, #diffModal {
+    width: 940px;
+    margin-left: -470px;
+}
+
+#diffModal .diff {
+    float: left;
+    width: 440px;
+    margin-left: 20px;
+}
+
+a.file, a.folder {
+    padding: 0px 0 0px 20px;
+}
+
+a.folder {
+    background: url(../img/folder-closed.gif) 0 0 no-repeat;
+}
+
+a.file {
+    background: url(../img/file.gif) 0 0 no-repeat;
+}
+
+.diffcode pre.prettyprint.INSERT {
+    border: 1px solid #00FF00;
+}
+
+.diffcode pre.prettyprint.CHANGE {
+    border: 1px solid #FFFF00;
+}
+
+.diffcode pre.prettyprint.DELETE {
+    border: 1px solid #FF0000;
+}
+
+.diffcode{
+    margin-left:20px;
+    clear:both;
+}
+
+.diffcode pre.prettyprint{
+    padding-left:45px;
+}
+
