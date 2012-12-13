@@ -3,6 +3,11 @@ MDS-Viewer
 
 webapplication to browse metadata services (MDS) in fusion middleware 11g
 
+Screenshots
+-----------
+[Folder View]: https://raw.github.com/stetro/MDS-Viewer/master/folder.PNG
+[File View]: https://raw.github.com/stetro/MDS-Viewer/master/file.PNG
+
 Installation
 ------------
 To use this project you have to insert the following library's into  ``/lib``.
