@@ -1,0 +1,26 @@
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+       xmlns:beans="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                    http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+                    http://www.springframework.org/schema/security
+                    http://www.springframework.org/schema/security/spring-security-3.1.xsd"
+        >
+
+    <authentication-manager>
+        <authentication-provider>
+            <user-service>
+                <user name="weblogic" password="welcome1" authorities="user"/>
+            </user-service>
+        </authentication-provider>
+    </authentication-manager>
+
+    <http use-expressions="true">
+        <intercept-url pattern="/" access="isAuthenticated()"/>
+        <intercept-url pattern="/index.html" access="isAuthenticated()"/>
+        <intercept-url pattern="/api/**" access="isAuthenticated()"/>
+        <logout logout-success-url="/login.html"/>
+        <form-login login-page="/login.html" authentication-failure-url="/login_error.html"/>
+    </http>
+
+</beans:beans>

@@ -19,14 +19,20 @@
 
     <title>MDS-Viewer</title>
 </head>
-<body ng-controller="FileViewerController">
-<div class="container" role="main">
-    <div class="navbar">
-        <div class="navbar-inner">
-            <a class="brand" href="?">MDS-Viewer</a>
+<body ng-controller="FileViewerController" id="viewer">
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+           <span class="brand">MDS-Viewer</span>
+            <div class="nav-collapse collapse">
+                <ul class="nav">
+                    <li><a href="/j_spring_security_logout">Sign Out</a></li>
+                </ul>
+            </div>
         </div>
-
     </div>
+</div>
+<div class="container" role="main">
 
     <div class="row">
         <div class="span4">

@@ -7,6 +7,7 @@ Screenshots
 -----------
 ![Folder View](https://raw.github.com/stetro/MDS-Viewer/master/folder.PNG)
 ![File View](https://raw.github.com/stetro/MDS-Viewer/master/file.PNG)
+![File View](https://raw.github.com/stetro/MDS-Viewer/master/login.PNG)
 
 Installation
 ------------
@@ -37,6 +38,8 @@ mds.password=
 mds.jdbc=
 mds.schema=
 ```
+
+Basic Login is weblogic/welcome1 (change in ``src/main/webapp/WEB-INF/security-app-context.xml``)
 
 License
 ---------------------

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+<head>
+    <script src="js/jquery-1.8.3.min.js"></script>
+    <script src="js/jquery.treeview.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+
+    <link type="text/css" rel="stylesheet" href="css/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="css/bootstrap-responsive.min.css">
+    <link type="text/css" rel="stylesheet" href="css/style.css">
+
+    <title>MDS-Viewer Login</title>
+</head>
+<body id="login">
+
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <span class="brand">MDS-Viewer</span>
+            <div class="nav-collapse collapse">
+                <ul class="nav">
+                    <li class="active"><a href="#">Sign In</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <form action="/j_spring_security_check" method="POST" class="form-signin">
+        <h2 class="form-signin-heading">Error</h2>
+        <p>Your login credentials are incorrect!</p>
+        <a class="btn btn-large btn-primary" href="/"/>Sign In Again</a>
+    </form>
+</div>
+
+</body>
+</html>
