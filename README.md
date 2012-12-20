@@ -7,7 +7,8 @@ Screenshots
 -----------
 ![Folder View](https://raw.github.com/stetro/MDS-Viewer/master/img/folder.PNG)
 ![File View](https://raw.github.com/stetro/MDS-Viewer/master/img/file.PNG)
-![File View](https://raw.github.com/stetro/MDS-Viewer/master/img/login.PNG)
+![Login](https://raw.github.com/stetro/MDS-Viewer/master/img/login.PNG)
+![Diff Example](https://raw.github.com/stetro/MDS-Viewer/master/img/diffexample.PNG)
 
 Installation
 ------------
