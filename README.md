@@ -13,7 +13,7 @@ Screenshots
 Installation
 ------------
 1. To use this project you have to insert the following library's into  ``/lib`` as local maven repository.
-You can find them in your middleware installation.
+    You can find them in your middleware installation.
 
     * nxsdlibs/
         * xmlparserv2.jar ``Middleware\oracle_common\modules\oracle.xdk_11.1.0\xmlparserv2.jar``
