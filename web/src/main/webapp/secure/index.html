@@ -1,0 +1,277 @@
+<!DOCTYPE HTML>
+<html lang="en-US" ng-app="mdsViewer" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <script src="../js/jquery-1.8.3.min.js"></script>
+    <script src="../js/jquery.treeview.js"></script>
+    <script src="../js/angular.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/fileViewerController.js"></script>
+    <script src="../js/prettify.js"></script>
+
+
+    <link type="text/css" rel="stylesheet" href="../css/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="../css/bootstrap-responsive.min.css">
+    <link type="text/css" rel="stylesheet" href="../css/style.css">
+    <link type="text/css" rel="stylesheet" href="../css/prettify.css">
+    <link type="text/css" rel="stylesheet" href="../css/jquery.treeview.css">
+
+
+    <title>MDS-Viewer</title>
+</head>
+<body ng-controller="FileViewerController" id="viewer">
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+           <span class="brand">MDS-Viewer</span>
+            <div class="nav-collapse collapse">
+                <ul class="nav">
+                    <li><a href="../logout">Sign Out</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container" role="main">
+
+    <div class="row">
+        <div class="span4">
+            <div id="filetree" class="well">
+
+                <div id="fileSpinner" ng-show="showFileSpinner">
+                    <span class="ball first-spinner"></span>
+                    <span class="ball second-spinner"></span>
+                    <span class="ball third-spinner"></span>
+                </div>
+
+                <script type="text/ng-template" id="tree_item_renderer.html">
+                    <span class="{{file.data.type}}" ng-click="selectFile(file)">{{file.data.path}}</span>
+                    <ul>
+                        <li ng-repeat="file in file.children" ng-include="'tree_item_renderer.html'"></li>
+                    </ul>
+                </script>
+
+                <ul class="filetree">
+                    <li ng-repeat="file in files.children" ng-include="'tree_item_renderer.html'"></li>
+                </ul>
+
+            </div>
+
+        </div>
+        <div class="span8">
+            <div class="alert" ng-show="alert">
+                <button type="button" class="close" ng-click="hideAlert()">×</button>
+                <strong>Warning </strong> <span id="alert_text">{{ alert }}</span>
+            </div>
+
+            <div class="well" ng-show="currentFile">
+                <div id="codeSpinner" ng-show="showCodeSpinner" class="pull-right">
+                    <span class="ball first-spinner"></span>
+                    <span class="ball second-spinner"></span>
+                    <span class="ball third-spinner"></span>
+                </div>
+                <pre ng-show="currentFile">{{currentFile.data.fullpath}}<span ng-show="loadedVersion"> (Version#{{loadedVersion}})</span></span></pre>
+                <div class="well" ng-show="currentFileVersions">
+                    <select ng-model="currentFileSelectedVersion">
+                        <option ng-repeat="(version,time) in currentFileVersions" value="{{version}}">
+                            {{version +" - "+time}}
+                        </option>
+                    </select>
+
+                    <div class="pull-right">
+                        <a class="btn btn-success" href="#diffModal" data-toggle="modal">
+                            Show Diff
+                        </a>
+                        <a class="btn btn-info" href="#" ng-click="loadCodeOfVersion()">
+                            Load version
+                        </a>
+                    </div>
+
+                </div>
+
+                <div class="pull-right">
+                    <a class="btn btn-info" href="#" ng-show="currentFile" ng-click="loadVersions()">
+                        <i class="icon-refresh icon-white"></i> Versions
+                    </a>
+                    <a class="btn  btn-info" href="#" ng-show="currentFile" download-file="currentFile" target="_blank">
+                        <i class="icon-download icon-white"></i> Download
+                    </a>
+                    <a class="btn btn-success" href="#editModal" ng-show="currentFile" data-toggle="modal">
+                        <i class="icon-edit icon-white"></i> Edit
+                    </a>
+                    <a class="btn btn-danger" href="#deleteModal" ng-show="currentFile" data-toggle="modal">
+                        <i class="icon-remove icon-white"></i> Delete
+                    </a>
+                </div>
+                <pre class="prettyprint linenums" id="code" ng-show="currentFile"></pre>
+            </div>
+
+            <div class="well" ng-show="currentFolder">
+                <div id="folderSpinner" ng-show="showFolderSpinner" class="pull-right">
+                    <span class="ball first-spinner"></span>
+                    <span class="ball second-spinner"></span>
+                    <span class="ball third-spinner"></span>
+                </div>
+
+                <div class="pull-right">
+                    <a class="btn btn-info" href="#addFileModal" ng-show="currentFolder" data-toggle="modal">
+                        <i class="icon-plus icon-white"></i> New File
+                    </a>
+                    <a class="btn btn-info" href="#addFolderModal" ng-show="currentFolder" data-toggle="modal">
+                        <i class="icon-plus icon-white"></i> New Folder
+                    </a>
+                    <a class="btn btn-danger" href="#deleteFolderModal" ng-show="currentFolder" data-toggle="modal">
+                        <i class="icon-remove icon-white"></i> Delete Folder
+                    </a>
+                </div>
+                <pre ng-show="currentFolder">{{currentFolder.data.fullpath}}</pre>
+                <pre class="linenums">
+                    <table class="table table-condensed table-striped">
+                        <tr class="info">
+                            <th>Name</th>
+                            <th>Versions</th>
+                            <th>Modified</th>
+                        </tr>
+                        <tr ng-repeat="file in selectedFiles">
+                            <td><a href="#" ng-click="selectFile(file)"
+                                   class="{{file.data.type}}">{{file.data.path}}</a></td>
+                            <td>{{file.data.versionCount}}</td>
+                            <td>{{file.data.lastModified}}</td>
+                        </tr>
+                    </table>
+                </pre>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="diffModal" class="modal hide fade">
+    <div class="modal-header">
+        <a href="#" class="close" data-dismiss="modal">&times;</a>
+
+        <h3>Show version differences &nbsp;&nbsp;<a href="#" class="btn btn-success" ng-click="executeDiff()">Update</a>
+        </h3>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="diff">
+                <div class="well">
+                    <select ng-model="firstSelectedVersion">
+                        <option ng-repeat="(version,time) in currentFileVersions" value="{{version}}">
+                            {{version +" - "+time}}
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="diff">
+                <div class="well">
+                    <select ng-model="secondSelectedVersion">
+                        <option ng-repeat="(version,time) in currentFileVersions" value="{{version}}">
+                            {{version +" - "+time}}
+                        </option>
+                    </select>
+                </div>
+
+            </div>
+            <div class="diffcode">
+<pre class="prettyprint linenums {{diff.type}}" ng-repeat="diff in diffs">
+<div>Row {{diff.original.position}} ({{diff.type}}) :</div>
+{{diff | diffcode}}
+</pre>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="addFileModal" class="modal hide fade">
+    <div class="modal-header">
+        <a href="#" class="close" data-dismiss="modal">&times;</a>
+
+        <h3>Add File</h3>
+    </div>
+    <div class="modal-body">
+        <div class="well">{{currentFolder.data.fullpath}}</div>
+        <label for="newFileName">New file name :</label>
+        <input id="newFileName" name="newFileName" ng-model="newFileName" type="text"/>
+        <textarea rows="10" ng-model="code"></textarea>
+    </div>
+    <div class="modal-footer">
+        <a href="#" ng-click="addFile(newFileName)" class="btn-info btn" data-dismiss="modal">Add</a>
+        <a href="#" class="btn" data-dismiss="modal">Cancel</a>
+    </div>
+</div>
+
+<div id="addFolderModal" class="modal hide fade">
+    <div class="modal-header">
+        <a href="#" class="close" data-dismiss="modal">&times;</a>
+
+        <h3>Add Folder</h3>
+    </div>
+    <div class="modal-body">
+        <div class="well">{{currentFolder.data.fullpath}}</div>
+        <label for="newFolderName">New file name :</label>
+        <input id="newFolderName" name="newFolderName" ng-model="newFolderName" type="text"/>
+    </div>
+    <div class="modal-footer">
+        <a href="#" ng-click="addFolder(newFolderName)" class="btn-info btn" data-dismiss="modal">Add</a>
+        <a href="#" class="btn" data-dismiss="modal">Cancel</a>
+    </div>
+</div>
+
+<div id="deleteFolderModal" class="modal hide fade">
+    <div class="modal-header">
+        <a href="#" class="close" data-dismiss="modal">&times;</a>
+
+        <h3>Delete Folder</h3>
+    </div>
+    <div class="modal-body">
+        <div class="well">{{currentFolder.data.fullpath}}</div>
+        <p>You are about to delete this folder, this procedure is irreversible.</p>
+
+        <p>Do you want to proceed?</p>
+    </div>
+    <div class="modal-footer">
+        <a href="#" ng-click="deleteFolder(currentFolder)" class="btn-danger btn btn-info" data-dismiss="modal">Yes</a>
+        <a href="#" class="btn" data-dismiss="modal">No</a>
+    </div>
+</div>
+
+<div id="deleteModal" class="modal hide fade">
+    <div class="modal-header">
+        <a href="#" class="close" data-dismiss="modal">&times;</a>
+
+        <h3>Delete File</h3>
+    </div>
+    <div class="modal-body">
+        <div class="well">{{currentFile.data.fullpath}}</div>
+        <p>You are about to delete this file, this procedure is irreversible.</p>
+
+        <p>Do you want to proceed?</p>
+    </div>
+    <div class="modal-footer">
+        <a href="#" ng-click="deleteFile(currentFile)" class="btn-danger btn btn-info" data-dismiss="modal">Yes</a>
+        <a href="#" class="btn" data-dismiss="modal">No</a>
+    </div>
+</div>
+
+
+<div id="editModal" class="modal hide fade">
+    <div class="modal-header">
+        <a href="#" class="close" data-dismiss="modal">&times;</a>
+
+        <h3>Edit File</h3>
+    </div>
+    <div class="modal-body">
+        <div class="well">{{currentFile.data.fullpath}}</div>
+        <textarea rows="10" ng-model="code">
+
+        </textarea>
+    </div>
+    <div class="modal-footer">
+        <a href="#" ng-click="saveFile(currentFile)" class="btn-danger btn btn-info" data-dismiss="modal">Save</a>
+        <a href="#" class="btn" data-dismiss="modal">Close</a>
+    </div>
+</div>
+
+</body>
+</html>

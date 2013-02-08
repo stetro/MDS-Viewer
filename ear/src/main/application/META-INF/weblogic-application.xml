@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<weblogic-application xmlns="http://www.bea.com/ns/weblogic/weblogic-application"
+                      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                      xsi:schemaLocation="http://www.bea.com/ns/weblogic/weblogic-application http://www.bea.com/ns/weblogic/weblogic-application/1.0/weblogic-application.xsd">
+    <application-param>
+        <param-name>webapp.encoding.default</param-name>
+        <param-value>UTF-8</param-value>
+    </application-param>
+
+    <prefer-application-packages>
+        <package-name>javax.xml.*</package-name>
+        <package-name>com.fasterxml.*</package-name>
+        <package-name>org.xml.*</package-name>
+        <package-name>antlr.*</package-name>
+        <package-name>org.apache.*</package-name>
+        <package-name>org.springframework.*</package-name>
+        <package-name>org.slf4j.*</package-name>
+    </prefer-application-packages>
+</weblogic-application>

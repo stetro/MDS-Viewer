@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.opitzconsulting.soa.mdsviewer</groupId>
+    <artifactId>mdsviewer-ear</artifactId>
+    <parent>
+        <groupId>com.opitzconsulting.soa.mdsviewer</groupId>
+        <artifactId>mdsviewer-parent</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <version>0.1</version>
+    <packaging>ear</packaging>
+
+    <properties>
+        <wls.adminServerHostName>soabpm-vm</wls.adminServerHostName>
+        <wls.adminServerPort>7001</wls.adminServerPort>
+        <wls.userId>weblogic</wls.userId>
+        <wls.password>welcome1</wls.password>
+    </properties>
+
+
+    <dependencies>
+        <dependency>
+            <groupId>com.opitzconsulting.soa.mdsviewer</groupId>
+            <artifactId>mdsviewer-web</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <type>war</type>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-ear-plugin</artifactId>
+                <version>2.8</version>
+                <configuration>
+                    <modules>
+                        <webModule>
+                            <groupId>com.opitzconsulting.soa.mdsviewer</groupId>
+                            <artifactId>mdsviewer-web</artifactId>
+                            <contextRoot>/mdsviewer</contextRoot>
+                        </webModule>
+                    </modules>
+                </configuration>
+            </plugin>
+            <!-- Use: mvn com.oracle.weblogic:weblogic-maven-plugin:deploy -->
+            <plugin>
+                <groupId>com.oracle.weblogic</groupId>
+                <artifactId>weblogic-maven-plugin</artifactId>
+                <version>10.3.4</version>
+                <configuration>
+                    <adminurl>t3://${wls.adminServerHostName}:${wls.adminServerPort}</adminurl>
+                    <user>${wls.userId}</user>
+                    <password>${wls.password}</password>
+                    <upload>true</upload>
+                    <action>deploy</action>
+                    <remote>true</remote>
+                    <verbose>true</verbose>
+                    <targets>AdminServer</targets>
+                    <source>${project.build.directory}/${project.build.finalName}.${project.packaging}</source>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
