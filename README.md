@@ -12,7 +12,7 @@ Screenshots
 
 Installation
 ------------
-To use this project you have to insert the following library's into  ``/lib``.
+1. To use this project you have to insert the following library's into  ``/lib`` as local maven repository.
 You can find them in your middleware installation.
 
 * nxsdlibs/
@@ -31,8 +31,22 @@ You can find them in your middleware installation.
     * wsm-policy-core.jar ``Middleware\oracle_common\modules\oracle.wsm.common_11.1.1\wsm-policy-core.jar``
     * xmlef.jar ``Middleware\oracle_common\modules\oracle.xmlef_11.1.1\xmlef.jar``
 
-You also have to change the connection properties in ``mds_db.properties``:
+2. Use the following command to build your own local maven repository for each file:
 
+```
+mvn install:install-file
+	-Dfile=tmp/mdslibs/filename.jar
+	-DartifactId=filename
+	-DgroupId=com.oracle
+	-Dversion=1.0
+	-Dpackaging=jar
+	-DgeneratePom=true
+	-DcreateChecksum=true
+	-DlocalRepositoryPath=lib
+```
+Fix the dependencies in ``/web/pom.xml`` if necessary.
+
+3. You also have to change the connection properties in ``mds_db.properties``:
 ```
 mds.user=
 mds.password=
@@ -40,7 +54,8 @@ mds.jdbc=
 mds.schema=
 ```
 
-Basic Login is weblogic/welcome1 (change in ``src/main/webapp/WEB-INF/security-app-context.xml``)
+4. Basic Login for local deployment is weblogic/welcome1 (change in ``/misc/jetty/realm.properties``).
+On WLS, the Administrator group is used.
 
 License
 ---------------------
